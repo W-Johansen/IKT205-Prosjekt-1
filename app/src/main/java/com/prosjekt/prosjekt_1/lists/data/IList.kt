@@ -2,9 +2,10 @@ package com.prosjekt.prosjekt_1.lists.data
 
 import kotlinx.android.parcel.Parcelize
 import kotlin.collections.List
+import com.google.gson.annotations.SerializedName
 
-data class Item (var name:String, var isDone:Boolean)
-data class IList (var name:String, var items:MutableList<Item>){
+data class Item (@SerializedName("name") var name:String, @SerializedName("isDone") var isDone:Boolean)
+data class IList (@SerializedName("name") var name:String, @SerializedName("items") var items:MutableList<Item>){
 
     public fun getPercent():Float {
         var doneCount: Float = 0f

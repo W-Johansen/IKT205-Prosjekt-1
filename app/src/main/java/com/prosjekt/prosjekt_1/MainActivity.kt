@@ -2,13 +2,14 @@ package com.prosjekt.prosjekt_1
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
+import android.widget.PopupMenu
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prosjekt.prosjekt_1.databinding.ActivityMainBinding
-import com.prosjekt.prosjekt_1.lists.IListDepositoryManager
 import com.prosjekt.prosjekt_1.lists.IListCollectionAdapter
+import com.prosjekt.prosjekt_1.lists.IListDepositoryManager
 import com.prosjekt.prosjekt_1.lists.IListDetailsActivity
 import com.prosjekt.prosjekt_1.lists.data.IList
 import com.prosjekt.prosjekt_1.lists.data.Item
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             (binding.listListing.adapter as IListCollectionAdapter).updateCollection(it)
         }
 
-        IListDepositoryManager.instance.load(getString(R.string.ilist_listing_url),this)
+        IListDepositoryManager.instance.load(getExternalFilesDir(null), "lists.json")
 
         binding.newListBtn.setOnClickListener {
             addIList("example")
@@ -47,6 +48,24 @@ class MainActivity : AppCompatActivity() {
             val ipm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             ipm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 
+        }
+
+        binding.syncMenu.setOnClickListener {
+
+            val popup = PopupMenu(this@MainActivity, binding.syncMenu)
+            //Inflating the Popup using xml file
+            popup.menuInflater.inflate(R.menu.sync_menu, popup.menu)
+
+
+            popup.setOnMenuItemClickListener{
+                when(it.itemId){
+                    R.id.save -> IListDepositoryManager.instance.saveLists(IListDepositoryManager.instance.getLists(), getExternalFilesDir(null), "lists.json")
+                    R.id.Upload -> IListDepositoryManager.instance.upload()
+                    R.id.Download -> IListDepositoryManager.instance.download()
+                }
+                true
+            }
+            popup.show()
         }
     }
 

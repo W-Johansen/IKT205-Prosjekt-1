@@ -7,46 +7,73 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.Volley
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.prosjekt.prosjekt_1.MainActivity
 import kotlin.collections.List
 import kotlin.collections.listOf
 import com.prosjekt.prosjekt_1.lists.data.IList
 import com.prosjekt.prosjekt_1.lists.data.Item
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 class IListDepositoryManager {
 
-    private lateinit var IListCollection: MutableList<IList>
+    private var IListCollection: MutableList<IList> = mutableListOf(IList("New List", mutableListOf(Item("New Item", false))))
     private lateinit var queue: RequestQueue
 
     var onILists: ((List<IList>) -> Unit)? = null
     var onIListUpdate: ((iList:IList) -> Unit)? = null
 
+    fun saveLists(lists:MutableList<IList>, path:File?, fileName:String){
+        // Object -> JSON
+        val outputJson: String = Gson().toJson(lists)
 
-    fun load(url: String, context: Context) {
+        if (path != null){
+            val file = File(path, fileName)
+            file.delete()
+            FileOutputStream(file, true).bufferedWriter().use { writer ->
+                writer.write(outputJson)
+            }
+        }else {
+            // Could not get external path
+        }
+    }
 
-        /*  queue = Volley.newRequestQueue(context)
+    fun load(path:File?, fileName:String) {
 
-          val request = JsonArrayRequest(Request.Method.GET, url, null,
-              {
+        lateinit var inputJson:String
 
-                  // JSON -> transport formatet
-                  // Gson -> Manipulering og serialisering av json
+        if (path != null){
+            val file = File(path, fileName)
+            if (file.canRead()){
+                inputJson = file.inputStream().bufferedReader().use(BufferedReader::readText)
+                // JSON -> Object
+                val listType = object : TypeToken<MutableList<IList>>() {}.type
+                IListCollection = Gson().fromJson<MutableList<IList>>(inputJson, listType)
+            }
 
-                  Log.d("BookDepositoryManager", it.toString(3))
-              },
-              {
-                  Log.e("BookDepositoryManager", it.toString())
-              })
-
-          queue.add(request)*/
-
-
-        IListCollection = mutableListOf(
-            IList("Liste 1", mutableListOf(Item("Test1-1", true), Item("Test1-2", false), Item("Test1-3", false))),
-            IList("Liste 2", mutableListOf(Item("Test2-1", false), Item("Test2-2", false))),
-            IList("Liste 3", mutableListOf(Item("Test3-1", false)))
-        )
+        } else {
+            // Could not get external path
+        }
 
         onILists?.invoke(IListCollection)
+    }
+
+    // TODO: IMPLEMENT
+    fun upload(){
+
+    }
+
+    // TODO: IMPLEMENT
+    fun download(){
+
+    }
+
+    fun getLists():MutableList<IList>{
+        return IListCollection
     }
 
     fun updateIList(iList: IList) {
