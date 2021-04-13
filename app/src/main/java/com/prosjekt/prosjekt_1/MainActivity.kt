@@ -3,10 +3,14 @@ package com.prosjekt.prosjekt_1
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.prosjekt.prosjekt_1.databinding.ActivityMainBinding
 import com.prosjekt.prosjekt_1.lists.IListCollectionAdapter
 import com.prosjekt.prosjekt_1.lists.IListDepositoryManager
@@ -26,12 +30,18 @@ class IListHolder{
 
 class MainActivity : AppCompatActivity() {
 
+    private val TAG:String = "Prosjekt_1:MainActivity"
+
     private lateinit var binding:ActivityMainBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        auth = Firebase.auth
+        signInAnonymously()
 
         binding.listListing.layoutManager = LinearLayoutManager(this)
         binding.listListing.adapter = IListCollectionAdapter(emptyList<IList>(), this::onIListClicked, this::onIListDelete)
@@ -66,6 +76,14 @@ class MainActivity : AppCompatActivity() {
                 true
             }
             popup.show()
+        }
+    }
+
+    private fun signInAnonymously(){
+        auth.signInAnonymously().addOnSuccessListener {
+            Log.d(TAG, "Login success ${it.user.toString()}")
+        }.addOnFailureListener {
+            Log.e(TAG, "login failed", it)
         }
     }
 
