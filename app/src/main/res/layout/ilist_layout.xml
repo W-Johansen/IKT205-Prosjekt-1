@@ -37,7 +37,7 @@
             tools:text="List title" />
 
         <ImageButton
-            android:id="@+id/itemBtn"
+            android:id="@+id/delListBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"

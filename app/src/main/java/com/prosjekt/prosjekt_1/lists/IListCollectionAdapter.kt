@@ -12,10 +12,10 @@ import com.prosjekt.prosjekt_1.databinding.IlistLayoutBinding
 import kotlin.math.roundToInt
 
 
-class IListCollectionAdapter(private var Lists:List<IList>, private val onIListClicked:(IList) -> Unit) : RecyclerView.Adapter<IListCollectionAdapter.ViewHolder>(){
+class IListCollectionAdapter(private var Lists:List<IList>, private val onIListClicked:(IList) -> Unit, private val onIListDelete:(IList) -> Unit) : RecyclerView.Adapter<IListCollectionAdapter.ViewHolder>(){
 
     class ViewHolder(val binding:IlistLayoutBinding):RecyclerView.ViewHolder(binding.root) {
-        fun bind(ilist: IList, onIListClicked:(IList) -> Unit) {
+        fun bind(ilist: IList, onIListClicked:(IList) -> Unit, onIListDelete: (IList) -> Unit) {
             binding.listName.setText(ilist.name)
 
             binding.listProgress.progress = (ilist.getPercent() * 100).roundToInt()
@@ -36,6 +36,10 @@ class IListCollectionAdapter(private var Lists:List<IList>, private val onIListC
                     false
                 }
             }
+
+            binding.delListBtn.setOnClickListener{
+                onIListDelete(ilist)
+            }
         }
     }
 
@@ -43,7 +47,7 @@ class IListCollectionAdapter(private var Lists:List<IList>, private val onIListC
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val iList = Lists[position]
-        holder.bind(iList, onIListClicked)
+        holder.bind(iList, onIListClicked, onIListDelete)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

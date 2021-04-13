@@ -50,12 +50,16 @@ class IListDepositoryManager {
     }
 
     fun updateIList(iList: IList) {
-        // finn bok i listen og erstat med den nye boken.
         onIListUpdate?.invoke(iList)
     }
 
     fun addIList(iList: IList) {
         IListCollection.add(iList)
+        onILists?.invoke(IListCollection)
+    }
+
+    fun delIList(iList: IList) {
+        IListCollection.remove(iList)
         onILists?.invoke(IListCollection)
     }
 

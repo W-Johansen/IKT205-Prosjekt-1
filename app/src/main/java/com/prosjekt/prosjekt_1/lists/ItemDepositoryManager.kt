@@ -29,6 +29,11 @@ class ItemDepositoryManager {
         onItems?.invoke(ItemColection)
     }
 
+    fun delItem(item: Item) {
+        ItemColection.remove(item)
+        onItems?.invoke(ItemColection)
+    }
+
     companion object {
         val instance = ItemDepositoryManager()
     }

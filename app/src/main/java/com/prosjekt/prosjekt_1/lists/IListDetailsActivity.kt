@@ -37,7 +37,7 @@ class IListDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.itemListing.layoutManager = LinearLayoutManager(this)
-        binding.itemListing.adapter = ItemCollectionAdapter(emptyList<Item>(), this::onItemChecked)
+        binding.itemListing.adapter = ItemCollectionAdapter(emptyList<Item>(), this::onItemChecked, this::onItemDelete)
 
         ItemDepositoryManager.instance.onItems = {
             (binding.itemListing.adapter as ItemCollectionAdapter).updateCollection(it)
@@ -62,6 +62,16 @@ class IListDetailsActivity : AppCompatActivity() {
         binding.headerTitle.text = iList.name
         binding.listProgress.progress = (iList.getPercent() * 100).roundToInt()
 
+        binding.newItemBtn.setOnClickListener {
+            addItem("New Item")
+
+            val ipm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            ipm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+
+            binding.listProgress.progress = (iList.getPercent() * 100).roundToInt()
+
+        }
+
     }
 
     private fun addItem(name:String) {
@@ -70,6 +80,11 @@ class IListDetailsActivity : AppCompatActivity() {
         ItemDepositoryManager.instance.addItem(item)
 
     }
+
+    private fun delItem(item:Item){
+        ItemDepositoryManager.instance.delItem(item)
+    }
+
     private fun onItemChecked(): Unit {
 
         binding.listProgress.progress = (iList.getPercent() * 100).roundToInt()
@@ -84,5 +99,10 @@ class IListDetailsActivity : AppCompatActivity() {
 
         //startActivity(intent)
         //startActivityForResult(intent, REQUEST_BOOK_DETAILS)
+    }
+
+    private fun onItemDelete(item:Item){
+        delItem(item)
+        binding.listProgress.progress = (iList.getPercent() * 100).roundToInt()
     }
 }

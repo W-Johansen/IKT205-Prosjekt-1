@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.listListing.layoutManager = LinearLayoutManager(this)
-        binding.listListing.adapter = IListCollectionAdapter(emptyList<IList>(), this::onIListClicked)
+        binding.listListing.adapter = IListCollectionAdapter(emptyList<IList>(), this::onIListClicked, this::onIListDelete)
 
         IListDepositoryManager.instance.onILists = {
             (binding.listListing.adapter as IListCollectionAdapter).updateCollection(it)
@@ -56,6 +56,11 @@ class MainActivity : AppCompatActivity() {
         IListDepositoryManager.instance.addIList(iList)
 
     }
+
+    private fun delIList(iList:IList) {
+        IListDepositoryManager.instance.delIList(iList)
+    }
+
     private fun onIListClicked(iList:IList): Unit {
 
         /*val intent =Intent(this, BookDetailsActivity::class.java).apply {
@@ -68,6 +73,10 @@ class MainActivity : AppCompatActivity() {
 
         //startActivity(intent)
         startActivityForResult(intent, REQUEST_LIST_DETAILS)
+    }
+
+    private fun onIListDelete(iList:IList): Unit {
+        delIList(iList)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

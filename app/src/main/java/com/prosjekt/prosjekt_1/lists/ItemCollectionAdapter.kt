@@ -1,5 +1,6 @@
 package com.prosjekt.prosjekt_1.lists
 
+import android.app.Activity
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,10 +11,10 @@ import com.prosjekt.prosjekt_1.databinding.ItemLayoutBinding
 import com.prosjekt.prosjekt_1.lists.data.Item
 import kotlinx.android.synthetic.main.item_layout.view.*
 
-class ItemCollectionAdapter(private var Items:List<Item>, private val onItemChecked:() -> Unit) : RecyclerView.Adapter<ItemCollectionAdapter.ViewHolder>() {
+class ItemCollectionAdapter(private var Items:List<Item>, private val onItemChecked:() -> Unit, private  val onItemDelete:(item:Item) -> Unit) : RecyclerView.Adapter<ItemCollectionAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemLayoutBinding):RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Item, onItemChecked:() -> Unit) {
+        fun bind(item: Item, onItemChecked:() -> Unit, onItemDelete: (item: Item) -> Unit) {
             binding.itemName.setText(item.name)
             binding.itemCheckBox.isChecked = item.isDone
             
@@ -35,6 +36,10 @@ class ItemCollectionAdapter(private var Items:List<Item>, private val onItemChec
                 onItemChecked()
             }
 
+            binding.delItemBtn.setOnClickListener{
+                onItemDelete(item)
+            }
+
         }
     }
 
@@ -42,7 +47,7 @@ class ItemCollectionAdapter(private var Items:List<Item>, private val onItemChec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = Items[position]
-        holder.bind(item, onItemChecked)
+        holder.bind(item, onItemChecked, onItemDelete)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
