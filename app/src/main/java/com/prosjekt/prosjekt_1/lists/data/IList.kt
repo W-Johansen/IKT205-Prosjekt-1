@@ -8,9 +8,13 @@ data class IList (var name:String, var items:MutableList<Item>){
 
     public fun getPercent():Float {
         var doneCount: Float = 0f
-        this.items.forEach {
-            if (it.isDone)
-                doneCount += 1f
+        if (this.items.size == 0){
+            return 0f
+        } else {
+            this.items.forEach {
+                if (it.isDone)
+                    doneCount += 1f
+            }
         }
         return doneCount / (this.items.size).toFloat()
     }
