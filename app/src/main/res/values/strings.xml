@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">prosjekt Liste</string>
+    <string name="ilist_listing_url">https://raw.githubusercontent.com/benoitvallon/100-best-books/master/books.json</string>
+</resources>
