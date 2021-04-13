@@ -1,7 +1,10 @@
 package com.prosjekt.prosjekt_1.lists
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlin.collections.List
 import com.prosjekt.prosjekt_1.lists.data.IList
@@ -13,19 +16,25 @@ class IListCollectionAdapter(private var Lists:List<IList>, private val onIListC
 
     class ViewHolder(val binding:IlistLayoutBinding):RecyclerView.ViewHolder(binding.root) {
         fun bind(ilist: IList, onIListClicked:(IList) -> Unit) {
-            binding.listName.text = ilist.name
+            binding.listName.setText(ilist.name)
 
-            var doneCount:Float = 0f
-            ilist.items.forEach{
-                if (it.isDone)
-                    doneCount += 1f
-            }
-            ilist.doneProcent = doneCount / (ilist.items.size).toFloat()
-
-            binding.listProgress.progress = (ilist.doneProcent * 100).roundToInt()
+            binding.listProgress.progress = (ilist.getPercent() * 100).roundToInt()
 
             binding.card.setOnClickListener {
                 onIListClicked(ilist)
+            }
+
+            binding.listName.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE){
+                    ilist.name = v.text.toString()
+
+                    val ipm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    ipm.hideSoftInputFromWindow(v?.windowToken, 0)
+
+                    true
+                } else {
+                    false
+                }
             }
         }
     }
@@ -46,5 +55,7 @@ class IListCollectionAdapter(private var Lists:List<IList>, private val onIListC
         notifyDataSetChanged()
     }
 
-
+    public fun refresh(){
+        notifyDataSetChanged()
+    }
 }

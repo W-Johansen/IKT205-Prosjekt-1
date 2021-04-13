@@ -6,24 +6,46 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
+    android:backgroundTint="@color/teal_700"
     android:clickable="true"
     android:focusable="true"
-    app:contentPadding="24dp"
+    app:cardBackgroundColor="@android:color/transparent"
     app:cardCornerRadius="4dp"
-    android:backgroundTint="@color/teal_700">
+    app:contentPadding="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
-        <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
             android:id="@+id/listName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:gravity="center_vertical"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:lines="1"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
             tools:text="List title" />
+
+        <ImageButton
+            android:id="@+id/itemBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:background="@android:color/transparent"
+            app:srcCompat="@android:drawable/ic_delete" />
+
+
+    </LinearLayout>
 
         <ProgressBar
             android:id="@+id/listProgress"

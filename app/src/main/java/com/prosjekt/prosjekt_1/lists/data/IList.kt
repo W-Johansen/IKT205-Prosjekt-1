@@ -5,6 +5,14 @@ import kotlin.collections.List
 
 data class Item (var name:String, var isDone:Boolean)
 data class IList (var name:String, var items:MutableList<Item>){
-    public var doneProcent:Float = 0f
+
+    public fun getPercent():Float {
+        var doneCount: Float = 0f
+        this.items.forEach {
+            if (it.isDone)
+                doneCount += 1f
+        }
+        return doneCount / (this.items.size).toFloat()
+    }
 }
 

@@ -1,14 +1,7 @@
 package com.prosjekt.prosjekt_1.lists
 
 import android.content.Context
-import android.util.Log
-import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.Volley
-import kotlin.collections.List
-import kotlin.collections.listOf
 import com.prosjekt.prosjekt_1.lists.data.IList
 import com.prosjekt.prosjekt_1.lists.data.Item
 

@@ -1,26 +1,38 @@
 package com.prosjekt.prosjekt_1.lists
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.recyclerview.widget.RecyclerView
 import com.prosjekt.prosjekt_1.databinding.ItemLayoutBinding
 import com.prosjekt.prosjekt_1.lists.data.Item
 import kotlinx.android.synthetic.main.item_layout.view.*
 
-class ItemCollectionAdapter(private var Items:List<Item>, private val onItemClicked:(Item) -> Unit) : RecyclerView.Adapter<ItemCollectionAdapter.ViewHolder>() {
+class ItemCollectionAdapter(private var Items:List<Item>, private val onItemChecked:() -> Unit) : RecyclerView.Adapter<ItemCollectionAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: ItemLayoutBinding):RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Item, onItemClicked:(Item) -> Unit) {
-            binding.itemName.text = item.name
+        fun bind(item: Item, onItemChecked:() -> Unit) {
+            binding.itemName.setText(item.name)
             binding.itemCheckBox.isChecked = item.isDone
+            
+            binding.itemName.setOnEditorActionListener { v, actionId, event ->
+                if (actionId == EditorInfo.IME_ACTION_DONE){
+                    item.name = v.text.toString()
 
-            binding.card.setOnClickListener {
-                // TODO: kanskje ikke trengs, vurder
-                onItemClicked(item)
+                    val ipm = v.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    ipm.hideSoftInputFromWindow(v?.windowToken, 0)
+
+                    true
+                } else {
+                    false
+                }
             }
+            
             binding.itemCheckBox.setOnClickListener{
-                print("test")
                 item.isDone = it.itemCheckBox.isChecked
+                onItemChecked()
             }
 
         }
@@ -30,7 +42,7 @@ class ItemCollectionAdapter(private var Items:List<Item>, private val onItemClic
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = Items[position]
-        holder.bind(item, onItemClicked)
+        holder.bind(item, onItemChecked)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

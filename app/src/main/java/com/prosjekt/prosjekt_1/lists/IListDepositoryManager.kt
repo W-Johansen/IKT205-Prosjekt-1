@@ -14,7 +14,7 @@ import com.prosjekt.prosjekt_1.lists.data.Item
 
 class IListDepositoryManager {
 
-    private lateinit var IListColection: MutableList<IList>
+    private lateinit var IListCollection: MutableList<IList>
     private lateinit var queue: RequestQueue
 
     var onILists: ((List<IList>) -> Unit)? = null
@@ -40,13 +40,13 @@ class IListDepositoryManager {
           queue.add(request)*/
 
 
-        IListColection = mutableListOf(
+        IListCollection = mutableListOf(
             IList("Liste 1", mutableListOf(Item("Test1-1", true), Item("Test1-2", false), Item("Test1-3", false))),
             IList("Liste 2", mutableListOf(Item("Test2-1", false), Item("Test2-2", false))),
             IList("Liste 3", mutableListOf(Item("Test3-1", false)))
         )
 
-        onILists?.invoke(IListColection)
+        onILists?.invoke(IListCollection)
     }
 
     fun updateIList(iList: IList) {
@@ -55,8 +55,8 @@ class IListDepositoryManager {
     }
 
     fun addIList(iList: IList) {
-        IListColection.add(iList)
-        onILists?.invoke(IListColection)
+        IListCollection.add(iList)
+        onILists?.invoke(IListCollection)
     }
 
     companion object {

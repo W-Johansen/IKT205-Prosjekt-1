@@ -12,9 +12,10 @@ import com.prosjekt.prosjekt_1.lists.IListCollectionAdapter
 import com.prosjekt.prosjekt_1.lists.IListDetailsActivity
 import com.prosjekt.prosjekt_1.lists.data.IList
 import com.prosjekt.prosjekt_1.lists.data.Item
+import kotlinx.android.synthetic.main.activity_main.view.*
 
 const val EXTRA_ILIST_INFO: String = "com.prosjekt.prosjekt_1.lists.info"
-const val REQUEST_LIST_DETAILS:Int = 564567
+const val REQUEST_LIST_DETAILS:Int = 1
 
 class IListHolder{
     companion object{
@@ -65,15 +66,15 @@ class MainActivity : AppCompatActivity() {
 
         val intent = Intent(this, IListDetailsActivity::class.java)
 
-        startActivity(intent)
-        //startActivityForResult(intent, REQUEST_BOOK_DETAILS)
+        //startActivity(intent)
+        startActivityForResult(intent, REQUEST_LIST_DETAILS)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == REQUEST_LIST_DETAILS){
-
+            (binding.root.listListing.adapter as IListCollectionAdapter).refresh()
         }
 
     }
