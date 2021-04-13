@@ -1,11 +1,13 @@
 package com.prosjekt.prosjekt_1
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding:ActivityMainBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var userId:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +53,8 @@ class MainActivity : AppCompatActivity() {
             (binding.listListing.adapter as IListCollectionAdapter).updateCollection(it)
         }
 
-        IListDepositoryManager.instance.load(getExternalFilesDir(null), "lists.json")
+        // TODO: Fix loading before signInAnonymously() completes
+        //IListDepositoryManager.instance.load(getExternalFilesDir(null), "${userId}.json")
 
         binding.newListBtn.setOnClickListener {
             addIList("example")
@@ -69,9 +73,17 @@ class MainActivity : AppCompatActivity() {
 
             popup.setOnMenuItemClickListener{
                 when(it.itemId){
-                    R.id.save -> IListDepositoryManager.instance.saveLists(IListDepositoryManager.instance.getLists(), getExternalFilesDir(null), "lists.json")
-                    R.id.Upload -> IListDepositoryManager.instance.upload()
-                    R.id.Download -> IListDepositoryManager.instance.download()
+                    R.id.save ->{
+                        // TODO: Add toast to successes or failures
+                        IListDepositoryManager.instance.saveLists(IListDepositoryManager.instance.getLists(), getExternalFilesDir(null), "${userId}.json")
+                    }
+                    R.id.Upload -> {
+                        IListDepositoryManager.instance.saveLists(IListDepositoryManager.instance.getLists(), getExternalFilesDir(null), "${userId}.json")
+                        IListDepositoryManager.instance.upload(getExternalFilesDir(null), "${userId}.json")
+                    }
+                    R.id.Download -> {
+                        IListDepositoryManager.instance.download(getExternalFilesDir(null), "${userId}.json")
+                    }
                 }
                 true
             }
@@ -82,6 +94,7 @@ class MainActivity : AppCompatActivity() {
     private fun signInAnonymously(){
         auth.signInAnonymously().addOnSuccessListener {
             Log.d(TAG, "Login success ${it.user.toString()}")
+            userId = it.user.uid.toString()
         }.addOnFailureListener {
             Log.e(TAG, "login failed", it)
         }
