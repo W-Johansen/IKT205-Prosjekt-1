@@ -8,4 +8,4 @@ For å lagre, opplaste eller nedlaste fra firebase gjøre du endringene til list
 For å hente ned lister fra firebase trykker du på download, den vil overskrive eventuelle endringer lokalt som ikke er opplasta.
 
 APK:
-Kommer det å
+https://appdistribution.firebase.dev/i/5efc780006a0334a
