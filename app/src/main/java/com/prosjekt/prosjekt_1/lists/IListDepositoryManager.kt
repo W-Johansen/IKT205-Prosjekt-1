@@ -104,8 +104,8 @@ class IListDepositoryManager {
                 Log.e(TAG, "Error downloading file from Firebase")
             }
             .addOnProgressListener {
-                // taskSnapshot.bytesTransferred
-                // taskSnapshot.totalByteCount
+                // it.bytesTransferred
+                // it.totalByteCount
             }
     }
 

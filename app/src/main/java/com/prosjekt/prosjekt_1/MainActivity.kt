@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.newListBtn.setOnClickListener {
-            addIList("example")
+            addIList("New List")
 
             val ipm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             ipm.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
@@ -64,14 +64,13 @@ class MainActivity : AppCompatActivity() {
         binding.syncMenu.setOnClickListener {
 
             val popup = PopupMenu(this@MainActivity, binding.syncMenu)
-            //Inflating the Popup using xml file
             popup.menuInflater.inflate(R.menu.sync_menu, popup.menu)
 
 
             popup.setOnMenuItemClickListener{
+                // TODO: Add toast to successes or failures
                 when(it.itemId){
                     R.id.save ->{
-                        // TODO: Add toast to successes or failures
                         IListDepositoryManager.instance.saveLists(IListDepositoryManager.instance.getLists(), getExternalFilesDir(null), "${userId}.json")
                     }
                     R.id.Upload -> {
