@@ -1,13 +1,11 @@
 package com.prosjekt.prosjekt_1
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -42,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setActionBar(binding.toolbar)
 
         auth = Firebase.auth
         signInAnonymously()
@@ -100,7 +99,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addIList(name:String) {
-
         val iList = IList(name, mutableListOf(Item("Item 1", false)))
         IListDepositoryManager.instance.addIList(iList)
 
@@ -111,11 +109,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onIListClicked(iList:IList): Unit {
-
-        /*val intent =Intent(this, BookDetailsActivity::class.java).apply {
-            putExtra(EXTRA_BOOK_INFO, book)
-        }*/
-
         IListHolder.PickedIList = iList
 
         val intent = Intent(this, IListDetailsActivity::class.java)
