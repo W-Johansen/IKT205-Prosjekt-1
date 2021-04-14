@@ -2,9 +2,10 @@
 
 Prosjekt i IKT205 ved UiA.
 
-Dette er en basic huskeliste app der du kan ha flere lister og spore progresjonen på de forsjelige listene.
+En basic huskeliste app der du kan ha flere lister og spore progresjonen på de forsjelige listene.
 
-Firebase støtte kommer :^)
+For å lagre, opplaste eller nedlaste fra firebase gjøre du endringene til listene så trykker du på save/upload for å lagre/opplaste.
+For å hente ned lister fra firebase trykker du på download, den vil overskrive eventuelle endringer lokalt som ikke er opplasta.
 
 APK:
 Kommer det å
