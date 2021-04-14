@@ -53,8 +53,6 @@ class MainActivity : AppCompatActivity() {
             (binding.listListing.adapter as IListCollectionAdapter).updateCollection(it)
         }
 
-        // TODO: Fix loading before signInAnonymously() completes
-        //IListDepositoryManager.instance.load(getExternalFilesDir(null), "${userId}.json")
 
         binding.newListBtn.setOnClickListener {
             addIList("example")
@@ -95,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         auth.signInAnonymously().addOnSuccessListener {
             Log.d(TAG, "Login success ${it.user.toString()}")
             userId = it.user.uid.toString()
+            IListDepositoryManager.instance.load(getExternalFilesDir(null), "${userId}.json")
         }.addOnFailureListener {
             Log.e(TAG, "login failed", it)
         }

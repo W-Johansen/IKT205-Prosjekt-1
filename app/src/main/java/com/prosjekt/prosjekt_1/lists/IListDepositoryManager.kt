@@ -65,7 +65,7 @@ class IListDepositoryManager {
             }
 
         } else {
-            // Could not get external path
+            Log.d(TAG, "Could not get external path")
         }
 
         onILists?.invoke(IListCollection)
@@ -99,24 +99,14 @@ class IListDepositoryManager {
             .addOnSuccessListener {
                 Log.d(TAG, "Downloaded file ${it.toString()}")
                 this.load(path, fileName)
-                Toast.makeText(MainActivity(), "Download success!", Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener {
                 Log.e(TAG, "Error downloading file from Firebase")
-                Toast.makeText(MainActivity(), "Download failed... Do you have anything uploaded?", Toast.LENGTH_SHORT).show()
             }
-            .addOnProgressListener { taskSnapshot ->
+            .addOnProgressListener {
                 // taskSnapshot.bytesTransferred
                 // taskSnapshot.totalByteCount
             }
-
-        /*var downloadTask = ref.getFile(file)
-
-        downloadTask.addOnSuccessListener {
-            Log.d(TAG, "Downloaded file ${it.toString()}")
-        }.addOnFailureListener{
-            Log.e(TAG, "Error downloading file from Firebase")
-        }*/
     }
 
     fun getLists():MutableList<IList>{
